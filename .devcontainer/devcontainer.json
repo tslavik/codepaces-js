@@ -19,8 +19,8 @@
 		"ms-azuretools.vscode-docker",
 		"ms-vscode.azurecli"
 	],
-	// "runArgs": ["--init"],
-	// "mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
+	"runArgs": ["--init"],
+	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
