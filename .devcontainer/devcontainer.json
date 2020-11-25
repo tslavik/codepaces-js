@@ -15,7 +15,8 @@
 	"extensions": [
 		"dbaeumer.vscode-eslint",
         "ms-vscode.vscode-typescript-tslint-plugin",
-        "ms-azuretools.vscode-azurefunctions"
+		"ms-azuretools.vscode-azurefunctions",
+		"ms-azuretools.vscode-docker"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
