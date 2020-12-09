@@ -22,7 +22,8 @@
 		"hookyqr.beautify",
 		"coenraads.bracket-pair-colorizer",
 		"visualstudioexptteam.vscodeintellicode",
-		"coenraads.bracket-pair-colorizer-2"
+		"coenraads.bracket-pair-colorizer-2",
+		"streetsidesoftware.code-spell-checker"
 	],
 	"runArgs": ["--init"],
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
