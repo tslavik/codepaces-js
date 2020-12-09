@@ -20,7 +20,9 @@
 		"ms-vscode.azurecli",
 		"esbenp.prettier-vscode",
 		"hookyqr.beautify",
-		"coenraads.bracket-pair-colorizer"
+		"coenraads.bracket-pair-colorizer",
+		"visualstudioexptteam.vscodeintellicode",
+		"coenraads.bracket-pair-colorizer-2"
 	],
 	"runArgs": ["--init"],
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
