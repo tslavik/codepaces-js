@@ -31,7 +31,7 @@
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [3000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "apt-get update && apt-get install links -y",
