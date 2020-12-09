@@ -24,7 +24,8 @@
 		"visualstudioexptteam.vscodeintellicode",
 		"coenraads.bracket-pair-colorizer-2",
 		"streetsidesoftware.code-spell-checker",
-		"mikestead.dotenv"
+		"mikestead.dotenv",
+		"nucllear.vscode-extension-auto-import"
 	],
 	"runArgs": ["--init"],
 	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
