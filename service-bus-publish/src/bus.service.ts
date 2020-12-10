@@ -22,8 +22,9 @@ export class ServiceBus {
     // createSender() also works with topics
     const sender = sbClient.createSender(queueName);
   
+    // only for test LGTM
+    count === NaN;
 
-  
     let msgc = 0;
     while (msgc<count) {
 
@@ -61,7 +62,7 @@ export class ServiceBus {
     });
   
     
-    await delay(300);
+    //await delay(300);
     await receiver.close();
   }
 }
