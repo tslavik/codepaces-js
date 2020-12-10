@@ -10,6 +10,7 @@ import { Message } from './dto/servicebus';
 const connectionString = process.env.SERVICE_BUS_CONNECTION_STRING || "<connection string>";
 const queueName = process.env.QUEUE_NAME_WITH_SESSIONS || "<queue name>";
 const sbClient = new ServiceBusClient(connectionString);
+const sessionId = "session-1";
 
 @Controller()
 export class AppController {
@@ -22,10 +23,10 @@ export class AppController {
   }
 
   @Get('getmessage')
-  sendMessage(): string {
+  getMessage(): string {
     const body:Message = {uuid:uuidv4(),date: new Date}
     console.log(body);
-    this.serviceBus.sendMessage(sbClient,body,"session-1");
+    this.serviceBus.receiveMessages(sbClient,sessionId);
     return "ok";
   }
 
@@ -34,7 +35,7 @@ export class AppController {
     console.log(msg);
     const body:Message = {uuid:uuidv4(),date: new Date}
     console.log(body);
-    this.serviceBus.sendMessage(sbClient,body,"session-1");
+    this.serviceBus.sendMessage(sbClient,body,msg.count,sessionId);
     return "ok";
   }
 
