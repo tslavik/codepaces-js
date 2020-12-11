@@ -96,7 +96,7 @@ export class ServiceBus {
 
     // Waiting long enough before closing the receiver to receive messages
     console.log(`Receiving messages for 20 seconds before exiting...`);
-    await delay(20000);
+    await delay(300000);
 
     console.log(`Closing...`);
     await receiver.close();
