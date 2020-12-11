@@ -34,10 +34,11 @@ export class AppController {
   @Post('message')
   postMessage(@Body() msg: any) : string {
     console.log(msg);
-    var obj = msg.body;
-    var ret = [];
+
+    let obj = msg.body;
+    let ret = [];
     // Potential DoS if obj.length is large.
-    for (var i = 0; i < obj.length; i++) {
+    for (let i = 0; i < obj.length; i++) {
         ret.push(obj[i]);
     }
     const body:Message = {uuid:uuidv4(),date: new Date}
