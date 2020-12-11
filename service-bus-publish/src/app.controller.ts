@@ -8,7 +8,7 @@ import { Body } from '@nestjs/common';
 import { Message } from './dto/servicebus';
 
 const connectionString = process.env.SERVICE_BUS_CONNECTION_STRING || "<connection string>";
-const queueName = process.env.QUEUE_NAME_WITH_SESSIONS || "<queue name>";
+// const queueName = process.env.QUEUE_NAME_WITH_SESSIONS || "<queue name>";
 const sbClient = new ServiceBusClient(connectionString);
 const sessionId = "session-1";
 
