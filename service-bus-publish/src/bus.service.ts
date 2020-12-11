@@ -29,7 +29,7 @@ export class ServiceBus {
     while (msgc<count) {
 
       const message = {
-        body: {uuid:uuidv4(),date: new Date},
+        body: {uuid: uuidv4(),date: new Date},
         label: "Message",
         sessionId: sessionId
       };
