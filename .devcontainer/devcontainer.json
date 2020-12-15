@@ -14,6 +14,7 @@
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"dbaeumer.vscode-eslint",
+		"ms-vsonline.vsonline",
         "ms-vscode.vscode-typescript-tslint-plugin",
 		"ms-azuretools.vscode-azurefunctions",
 		"ms-azuretools.vscode-docker",

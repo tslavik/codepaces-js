@@ -18,7 +18,7 @@ const sbClient = new ServiceBusClient(connectionString);
 export class ServiceBus {
 
 
-  async sendMessage(sbClient: ServiceBusClient, msg: Message, count: Number, sessionId: string) {
+  async sendMessage(sbClient: ServiceBusClient, msg: Message[], count: Number, sessionId: string) {
     // createSender() also works with topics
     const sender = sbClient.createSender(queueName);
   
@@ -29,12 +29,12 @@ export class ServiceBus {
     while (msgc<count) {
 
       const message = {
-        body: {uuid: uuidv4(),date: new Date},
+        body: JSON.stringify(msg),
         label: "Message",
         sessionId: sessionId
       };
 
-      console.log(`Sending message: "${JSON.stringify(msg)}" to "${sessionId}"`);
+      console.log(`Sending message: "${msgc}" to "${sessionId}"`);
       await sender.sendMessages(message);
       
       msgc++;

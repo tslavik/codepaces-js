@@ -25,8 +25,6 @@ export class AppController {
 
   @Get('getmessage')
   getMessage(): string {
-    const body:Message = {uuid:uuidv4(),date: new Date}
-    console.log(body);
     this.serviceBus.receiveMessages(sbClient,sessionId);
     return "ok";
   }
@@ -35,13 +33,13 @@ export class AppController {
   postMessage(@Body() msg: any) : string {
     console.log(msg);
 
-    let obj = msg.body;
-    let ret = [];
-    // Potential DoS if obj.length is large.
-    for (let i = 0; i < obj.length; i++) {
-        ret.push(obj[i]);
-    }
-    const body:Message = {uuid:uuidv4(),date: new Date}
+    // let obj = msg.body;
+    // let ret = [];
+    // // Potential DoS if obj.length is large.
+    // for (let i = 0; i < obj.length; i++) {
+    //     ret.push(obj[i]);
+    // }
+    const body:Message[] = msg.body
     console.log(body);
     this.serviceBus.sendMessage(sbClient,body,msg.count,sessionId);
     return "ok";
