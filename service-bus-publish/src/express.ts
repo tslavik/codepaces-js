@@ -1,6 +1,10 @@
 var express = require('express');
 var app = express();
 app.post("/foo", (req, res) => {
+    //just for OSSAR
+    let injection = "Hello, security vulnerabilities!";
+    eval(`console.log(\"${injection}\");`);
+    
     var obj = req.body;
     var ret = [];
     // Potential DoS if obj.length is large.
@@ -8,3 +12,4 @@ app.post("/foo", (req, res) => {
         ret.push(obj[i]);
     }
 });
+

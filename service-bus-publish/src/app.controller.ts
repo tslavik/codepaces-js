@@ -19,11 +19,6 @@ export class AppController {
   @Get()
   getHello(): string {
     console.log("Hello");
-
-    //just for OSSAR
-    let injection = "Hello, security vulnerabilities!";
-    eval(`console.log(\"${injection}\");`);
-    
     return this.appService.getHello();
   }
 
