@@ -22,8 +22,8 @@ export class AppController {
   }
 
   @Get('getmessage')
-  getMessage(): string {
-    this.serviceBus.receiveMessages(sbClient,sessionId);
+  async getMessage(): Promise<string> {
+    await this.serviceBus.receiveMessages(sbClient,sessionId);
     return "ok";
   }
 
