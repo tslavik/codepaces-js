@@ -14,13 +14,16 @@
             "resolveSourceMapLocations": [
                 "${workspaceFolder}/service-bus-publish/**",
                 "!**/node_modules/**"
-            ]
+            ],
+            "preLaunchTask": "install"
+            
         },
         {
             "name": "Attach to Node Functions",
             "type": "node",
             "request": "attach",
             "port": 9229
+            
         }
         
     ]

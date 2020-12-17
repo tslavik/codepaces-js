@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "install-build",
+			"command": "npm run start:debug",
+			"dependsOn": "npm install",
+			"problemMatcher": "$tsc",
+            "options": {
+                "cwd": "${workspaceFolder}/service-bus-publish"
+        },
+		},
+		{
+			"type": "shell",
+			"label": "install",
+			"command": "npm install",
+            "options": {
+                "cwd": "${workspaceFolder}/service-bus-publish"
+        },
+		},
+	]
+}
