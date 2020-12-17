@@ -10,9 +10,7 @@ dotenv.config();
 
 // Define connection string and related Service Bus entity names here
 // Ensure on portal.azure.com that queue/topic has Sessions feature enabled
-const connectionString = process.env.SERVICE_BUS_CONNECTION_STRING || "<connection string>";
-const queueName = process.env.QUEUE_NAME_WITH_SESSIONS || "<queue name>";
-const sbClient = new ServiceBusClient(connectionString);
+const queueName = "test";
 
 @Injectable()
 export class ServiceBus {
