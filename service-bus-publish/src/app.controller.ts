@@ -23,7 +23,7 @@ export class AppController {
 
   @Get('getmessage')
   async getMessage(): Promise<string> {
-    await this.serviceBus.receiveMessages(sbClient,sessionId);
+    await this.serviceBus.receiveMsg(sbClient,sessionId);
     return "ok";
   }
 
