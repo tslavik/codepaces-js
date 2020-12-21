@@ -10,7 +10,7 @@ dotenv.config();
 
 
 const queueName = "test";
-const maxInflight = 10;
+const maxInflight = 100;
 let messageBody;
 @Injectable()
 export class ServiceBus {
