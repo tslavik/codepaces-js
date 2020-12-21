@@ -10,7 +10,7 @@ dotenv.config();
 
 
 const queueName = "test";
-const maxInflight = 1000;
+const maxInflight = 10;
 let messageBody;
 @Injectable()
 export class ServiceBus {
@@ -32,21 +32,6 @@ export class ServiceBus {
     await Promise.all(promises);
     await sender.close();
     console.log("sender closed");
-    
-    // while (msgc<count) {
-
-    //   const message = {
-    //     body: JSON.stringify(msg),
-    //     label: "Message",
-    //     sessionId: sessionId
-    //   };
-
-    //   console.log(`Sending message: "${msgc}" to "${sessionId}"`);
-    //   await sender.sendMessages(message);
-      
-    //   msgc++;
-    // }
-    
 
   }
 
@@ -96,11 +81,9 @@ export class ServiceBus {
     // const receiver = sbClient.createReceiver(queueName);
     const options:ServiceBusSessionReceiverOptions = {receiveMode:"receiveAndDelete"};
     const receiver = await sbClient.acceptSession(queueName, sessionId, options);
-    const receiver2 = await sbClient.acceptSession(queueName, sessionId, options);
-    const subscribeOptions:SubscribeOptions = {maxConcurrentCalls:1000,autoCompleteMessages:false};
-
+    const subscribeOptions:SubscribeOptions = {maxConcurrentCalls:100,autoCompleteMessages:false};
+    let msgc = 0;
     try {
-      let msgc = 0;
       const subscription = receiver.subscribe({
         // After executing this callback you provide, the receiver will remove the message from the queue if you
         // have not already settled the message in your callback.
@@ -145,8 +128,8 @@ export class ServiceBus {
       },subscribeOptions);
   
       // Waiting long enough before closing the receiver to receive messages
-      console.log(`Receiving messages for 20 seconds before exiting...`);
-      await delay(20000);
+      console.log(`Receiving messages for 60 seconds before exiting...`);
+      await delay(60000);
   
       console.log(`Closing...`);
       await receiver.close();
