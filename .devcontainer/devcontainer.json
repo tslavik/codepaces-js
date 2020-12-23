@@ -5,6 +5,8 @@
 		// Update 'VARIANT' to pick a Node version: 10, 12, 14
 		"args": { "VARIANT": "14" }
 	},
+	"runArgs": ["--init"],
+	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
@@ -27,8 +29,7 @@
 		"mikestead.dotenv",
 		"nucllear.vscode-extension-auto-import"
 	],
-	"runArgs": ["--init"],
-	"mounts": [ "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind" ],
+	
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [3000,9229],
