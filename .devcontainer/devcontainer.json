@@ -27,7 +27,8 @@
 		"visualstudioexptteam.vscodeintellicode",
 		"streetsidesoftware.code-spell-checker",
 		"mikestead.dotenv",
-		"nucllear.vscode-extension-auto-import"
+		"nucllear.vscode-extension-auto-import",
+		"github.vscode-codeql"
 	],
 	
 
