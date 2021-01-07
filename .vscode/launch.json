@@ -15,8 +15,8 @@
                 "${workspaceFolder}/service-bus-publish/**",
                 "!**/node_modules/**"
             ],
-            "preLaunchTask": "install"
-            
+            "preLaunchTask": "install",
+            "envFile": "${workspaceFolder}/service-bus-publish/.env"
         },
         {
             "name": "Attach to Node Functions",
@@ -24,7 +24,20 @@
             "request": "attach",
             "port": 9229
             
-        }
+        },
+            {
+              "name": "Launch TypeScript",
+              "type": "node",
+              "request": "launch",
+              "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+              "args": ["./receive.ts", "--transpile-only","10","45530","false"],
+              "cwd": "${workspaceFolder}/service-bus-publish/src",
+              "internalConsoleOptions": "openOnSessionStart",
+              "skipFiles": ["<node_internals>/**", "node_modules/**"],
+              "env": {
+                "TS_NODE_PROJECT": "${workspaceFolder}/service-bus-publish/tsconfig.json"
+              }
+            }
         
     ]
 }
