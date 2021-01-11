@@ -19,6 +19,7 @@ dotenv.config();
 const _start = moment();
 
 let _messages = 0;
+let _countMsg = 0;
 
 async function main(): Promise<void> {
   // Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=<shared-access-key>
@@ -52,11 +53,17 @@ async function RunTest(
 //     isReceiveAndDelete ? { receiveMode: "receiveAndDelete" } : {}
 //   );
   const options:ServiceBusSessionReceiverOptions = {receiveMode:"receiveAndDelete"};
-  const receiver = await ns.acceptSession(entityPath, "session-1", options);
+  let receiver = await ns.acceptSession(entityPath, "session-1", options);
 
   const processMessage = async (msg: ServiceBusReceivedMessage) => {
     _messages++;
-    if (!isReceiveAndDelete) await receiver.completeMessage(msg);
+    _countMsg++;
+
+    if (_countMsg === 2000) {
+      await receiver.close();
+      receiver = await ns.acceptSession(entityPath, "session-1", options);
+      _countMsg = 0;
+    }
     if (_messages === messages) {
       await receiver.close();
       await ns.close();

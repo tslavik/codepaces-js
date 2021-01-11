@@ -5,7 +5,7 @@
 			"type": "shell",
 			"label": "install-build",
 			"command": "npm run start:debug",
-			"dependsOn": "npm install",
+			"dependsOn": "npm build",
 			"problemMatcher": "$tsc",
             "options": {
                 "cwd": "${workspaceFolder}/service-bus-publish"
@@ -19,5 +19,14 @@
                 "cwd": "${workspaceFolder}/service-bus-publish"
         },
 		},
+		{
+			"type": "shell",
+			"label": "build",
+			"command": "npm run build",
+			"dependsOn": "npm install",
+            "options": {
+                "cwd": "${workspaceFolder}/service-bus-publish"
+        },
+		}
 	]
 }

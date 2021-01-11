@@ -11,11 +11,12 @@ dotenv.config();
 
 
 const queueName = "test";
-const maxInflight = 100;
+const maxInflight = 1000;
 let messageBody;
 
 const _start = moment();
 let _messages = 0;
+let _countMsg = 0;
 @Injectable()
 export class ServiceBus {
 
@@ -120,74 +121,84 @@ export class ServiceBus {
     }
   }
 
-  async receiveMessages(sbClient: ServiceBusClient, sessionId: string) {
+  async receiveMessages() {
   
-    const maxConcurrentCalls = 10;
+    const maxConcurrentCalls = 100;
+    const allMessages = 10000;
   
-    const writeResultsPromise = this.WriteResults(10000);
-  
-    await this.RunTest(sbClient, "session-1", maxConcurrentCalls, 10000);
+    const writeResultsPromise = this.WriteResults(allMessages);
+    await this.RunTest("session-1",maxConcurrentCalls, allMessages);
     await writeResultsPromise;
   }
   
+  async createReceiver(maxConcurrentCalls:number){
+    _countMsg = 0;
+    const allMessages = 10000;
+    await this.RunTest("session-1",maxConcurrentCalls, allMessages);
+  }
 
   async RunTest(
-    sbClient: ServiceBusClient,
     sessionId: string,
     maxConcurrentCalls: number,
     messages: number
   ): Promise<void> {
-  
+    const connectionString = process.env.SB_CONN_STR || "<connection string>";
+    const sbClientLocal = new ServiceBusClient(connectionString);
     const options:ServiceBusSessionReceiverOptions = {receiveMode:"receiveAndDelete"};
-    const receiver = await sbClient.acceptSession(queueName, sessionId, options);
+    const receiver = await sbClientLocal.acceptSession(queueName, sessionId, options);
     const subscribeOptions:SubscribeOptions = {maxConcurrentCalls:maxConcurrentCalls,autoCompleteMessages:false};
 
-    const subscription = receiver.subscribe({
-      // After executing this callback you provide, the receiver will remove the message from the queue if you
-      // have not already settled the message in your callback.
-      // You can disable this by passing `false` to the `autoCompleteMessages` option in the `subscribe()` method.
-      // If your callback _does_ throw an error before the message is settled, then it will be abandoned.
-      
-      processMessage: async (brokeredMessage: ServiceBusReceivedMessage) => {
-        _messages++;
-        if (_messages === messages) {
-          await receiver.close();
-          await sbClient.close();
-        }
-      },
-      
-      // This callback will be called for any error that occurs when either in the receiver when receiving the message
-      // or when executing your `processMessage` callback or when the receiver automatically completes or abandons the message.
-      processError: async (args: ProcessErrorArgs) => {
-        console.log(`Error from source ${args.errorSource} occurred: `, args.error);
-
-        // the `subscribe() call will not stop trying to receive messages without explicit intervention from you.
-        if (isServiceBusError(args.error)) {
-          switch (args.error.code) {
-            case "MessagingEntityDisabled":
-            case "MessagingEntityNotFound":
-            case "UnauthorizedAccess":
-              // It's possible you have a temporary infrastructure change (for instance, the entity being
-              // temporarily disabled). The handler will continue to retry if `close()` is not called on the subscription - it is completely up to you
-              // what is considered fatal for your program.
-              console.log(
-                `An unrecoverable error occurred. Stopping processing. ${args.error.code}`,
-                args.error
-              );
-              await subscription.close();
-              break;
-            case "MessageLockLost":
-              console.log(`Message lock lost for message`, args.error);
-              break;
-            case "ServiceBusy":
-              // choosing an arbitrary amount of time to wait.
-              await delay(1000);
-              break;
+     const subscription = receiver.subscribe({
+          // After executing this callback you provide, the receiver will remove the message from the queue if you
+          // have not already settled the message in your callback.
+          // You can disable this by passing `false` to the `autoCompleteMessages` option in the `subscribe()` method.
+          // If your callback _does_ throw an error before the message is settled, then it will be abandoned.
+          
+          processMessage: async (brokeredMessage: ServiceBusReceivedMessage) => {
+            _messages++;
+            _countMsg++;
+            if (_countMsg == 2000) {
+              await receiver.close();
+              await sbClientLocal.close();
+              await this.createReceiver(maxConcurrentCalls);
+            }
+            if (_messages === messages){
+              await receiver.close();
+              await sbClientLocal.close();
+            }
+            
+          },
+          
+          // This callback will be called for any error that occurs when either in the receiver when receiving the message
+          // or when executing your `processMessage` callback or when the receiver automatically completes or abandons the message.
+          processError: async (args: ProcessErrorArgs) => {
+            console.log(`Error from source ${args.errorSource} occurred: `, args.error);
+    
+            // the `subscribe() call will not stop trying to receive messages without explicit intervention from you.
+            if (isServiceBusError(args.error)) {
+              switch (args.error.code) {
+                case "MessagingEntityDisabled":
+                case "MessagingEntityNotFound":
+                case "UnauthorizedAccess":
+                  // It's possible you have a temporary infrastructure change (for instance, the entity being
+                  // what is considered fatal for your program.
+                  console.log(
+                    `An unrecoverable error occurred. Stopping processing. ${args.error.code}`,
+                    args.error
+                  );
+                  await subscription.close();
+                  break;
+                case "MessageLockLost":
+                  console.log(`Message lock lost for message`, args.error);
+                  break;
+                case "ServiceBusy":
+                  // choosing an arbitrary amount of time to wait.
+                  await delay(1000);
+                  break;
+              }
+            }
           }
-        }
-      }
-    },subscribeOptions);
-  
+        },subscribeOptions);
   }
   
   async WriteResults(messages: number): Promise<void> {

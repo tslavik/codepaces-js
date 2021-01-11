@@ -15,7 +15,7 @@
                 "${workspaceFolder}/service-bus-publish/**",
                 "!**/node_modules/**"
             ],
-            "preLaunchTask": "install",
+            "preLaunchTask": "build",
             "envFile": "${workspaceFolder}/service-bus-publish/.env"
         },
         {
