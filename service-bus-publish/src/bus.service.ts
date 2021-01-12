@@ -11,7 +11,7 @@ dotenv.config();
 
 
 const queueName = "test";
-const maxInflight = 1000;
+const maxInflight = 100;
 let messageBody;
 
 const _start = moment();
@@ -124,7 +124,7 @@ export class ServiceBus {
   async receiveMessages() {
   
     const maxConcurrentCalls = 100;
-    const allMessages = 10000;
+    const allMessages = 100000;
   
     const writeResultsPromise = this.WriteResults(allMessages);
     await this.RunTest("session-1",maxConcurrentCalls, allMessages);
@@ -133,7 +133,7 @@ export class ServiceBus {
   
   async createReceiver(maxConcurrentCalls:number){
     _countMsg = 0;
-    const allMessages = 10000;
+    const allMessages = 100000;
     await this.RunTest("session-1",maxConcurrentCalls, allMessages);
   }
 
